@@ -1,20 +1,20 @@
+import java.util.Stack;
+
 public class ValidParentheses {
     public static void main(String[] args) {
-        System.out.println(isValid("(({asdasdasda{})}))"));
+        System.out.println(isValid("({}[}])[]"));
     }
 
     public static boolean isValid(String s) {
-        char[] charArray = s.toCharArray();
-        int oCurl = 0, cCurl = 0, oBrac = 0, cBrac = 0;
-        for (char c : charArray) {
-            switch (c) {
-                case '{' -> oCurl += 1;
-                case '(' -> oBrac += 1;
-                case '}' -> cCurl += 1;
-                case ')' -> cBrac += 1;
-            }
+        Stack<Character> characterStack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (!characterStack.isEmpty()) {
+                if (characterStack.peek() == '(' && s.charAt(i) == ')') characterStack.pop();
+                else if (characterStack.peek() == '{' && s.charAt(i) == '}') characterStack.pop();
+                else if (characterStack.peek() == '[' && s.charAt(i) == ']') characterStack.pop();
+                else characterStack.push(s.charAt(i));
+            } else characterStack.push(s.charAt(i));
         }
-
-        return (oCurl == cCurl && oBrac == cBrac);
+        return characterStack.isEmpty();
     }
 }
